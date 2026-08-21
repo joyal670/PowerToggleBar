@@ -18,6 +18,31 @@ The point is the **restore**. Dimming a screen is trivial; what is annoying is
 remembering what your brightness and Bluetooth were before you dimmed them.
 This captures that state on the way in and replays it on the way out.
 
+## Download
+
+[**Download PowerToggleBar 1.0.0**](https://github.com/joyal670/PowerToggleBar/releases/latest/download/PowerToggleBar.app.zip) — universal binary, macOS 13 or later
+
+Unzip, move it to `~/Applications`, then clear the quarantine flag macOS attaches to
+downloads:
+
+```bash
+xattr -dr com.apple.quarantine ~/Applications/PowerToggleBar.app
+open ~/Applications/PowerToggleBar.app
+```
+
+That step is not optional. The app is **ad-hoc signed rather than notarized**,
+so Gatekeeper refuses to open it and reports it as damaged. It is not damaged —
+the bundle passes `codesign --verify --strict`; the message is what macOS shows
+for any un-notarized app that arrived with a quarantine flag.
+
+**The app on its own does nothing.** It is only a trigger for the scripts in
+`~/.powersaver` — follow [Setup](#setup) first, or clicking the menu bar item
+has no effect. Note too that this `.app` is a prebuilt binary with no matching
+source in this repository; see [Notes and limitations](#notes-and-limitations).
+
+Building from source avoids this entirely, since a locally built copy is never
+quarantined.
+
 ## What it's for
 
 - Stretching the last stretch of battery on a flight, a commute, or a long
