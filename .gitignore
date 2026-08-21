@@ -1,0 +1,9 @@
+.DS_Store
+disp
+kb
+*.dSYM/
+build/
+dist/
+# runtime state — lives in ~/.powersaver, never commit
+active
+state.env
