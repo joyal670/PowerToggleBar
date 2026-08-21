@@ -43,18 +43,29 @@ menu bar click
 ```
 
 **`toggle.sh`** is the entry point, and it is stateless apart from the flag —
-the presence or absence of `~/.powersaver/active` *is* the mode.
+the presence or absence of `~/.powersaver/active` *is* the mode. The flag is
+created and cleared by `powersave.sh` and `restore.sh` themselves, not by
+`toggle.sh`, so every entry point — the menu bar app, the toggle, and the
+standalone AppleScripts — agrees on the current mode.
 
 **`powersave.sh`** reads current display brightness, keyboard backlight, and
-Bluetooth power, writes all three to `state.env`, then sets brightness to
+Bluetooth power, writes all three to `state.env` **on first entry only**, then
+sets brightness to
 `MIN_DISPLAY` (0.05), keyboard backlight to 0.0, and Bluetooth off. It also
 reports whether macOS Low Power Mode is on, read from `pmset -g` — it does not
 set it, since that needs elevated privileges.
 
-**`restore.sh`** sources `state.env` and replays all three values. If the file is
-missing it falls back to sane defaults (`DISP=0.7`, `KEYB=0.0`, `BT=1`) rather
-than failing, so a lost state file leaves you with a usable screen instead of a
-black one.
+**`restore.sh`** sources `state.env` and replays all three values, then clears
+the flag. If the file is missing it falls back to sane defaults (`DISP=0.7`,
+`KEYB=0.0`, `BT=1`) rather than failing, so a lost state file leaves you with a
+usable screen instead of a black one. Run outside saver mode it prints
+`already normal` and changes nothing.
+
+Both halves are **idempotent**, and that is load-bearing rather than tidiness.
+`powersave.sh` re-applies the dimming on a re-entry but deliberately does not
+re-capture: the values on screen are already the dimmed ones, and saving those
+would overwrite the settings `restore.sh` exists to bring back — leaving you
+stuck at 5% brightness with the original value gone.
 
 ### The brightness helpers
 
@@ -156,7 +167,9 @@ launchctl list | grep powertoggle
 
 Three standalone entry points, each shelling out to one script and reporting the
 result as a notification. They are an alternative to the menu-bar app — useful
-as Shortcuts actions, Automator quick actions, or hotkeys:
+as Shortcuts actions, Automator quick actions, or hotkeys. Because the flag is
+owned by the scripts rather than by `toggle.sh`, these stay in sync with the
+menu bar app and are safe to run more than once:
 
 | Script | Runs | Notification |
 |---|---|---|
