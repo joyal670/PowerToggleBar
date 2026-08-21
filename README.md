@@ -4,6 +4,11 @@ A macOS menu-bar battery saver. One click drops the machine into a low-power
 state — display dimmed, keyboard backlight off, Bluetooth off — and a second
 click puts everything back exactly as it was.
 
+<img src="docs/menubar.png" alt="PowerToggleBar in the macOS menu bar, showing a bolt and 91 percent battery" width="112">
+
+The bar shows current battery percentage next to the bolt. Clicking it toggles
+the mode, and the result arrives as a notification:
+
 ```
 🔋 Saver  — Screen → 5% · keyboard off · Bluetooth off · Low Power ON
 ☀️ Normal — Restored · screen 70% · Bluetooth on
@@ -186,6 +191,16 @@ Default `0.05` is the lowest still-usable brightness; `0.0` is full black.
 - **State survives a reboot.** If you reboot while in saver mode, `active` and
   `state.env` persist, so the next toggle correctly restores your original
   settings rather than the dimmed ones.
+
+## See also
+
+One of three small macOS menu-bar utilities, shown here running side by side:
+
+<img src="docs/menubar-context.png" alt="All three utilities in the macOS menu bar" width="300">
+
+- [NetSpeedBar](https://github.com/joyal670/NetSpeedBar) — live download and upload speed
+- [DisplayHelper](https://github.com/joyal670/DisplayHelper) — keeps the display awake and the system marked active
+- [PowerToggleBar](https://github.com/joyal670/PowerToggleBar) — one-click battery saver with exact restore  ← *you are here*
 
 ## License
 
