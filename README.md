@@ -186,3 +186,7 @@ Default `0.05` is the lowest still-usable brightness; `0.0` is full black.
 - **State survives a reboot.** If you reboot while in saver mode, `active` and
   `state.env` persist, so the next toggle correctly restores your original
   settings rather than the dimmed ones.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
